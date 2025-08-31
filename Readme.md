@@ -5,11 +5,13 @@
 - The OCT b-scamn images are assumed to be acquired with a **Cirrus HD-OCT (Zeiss)**. 
   - Each OCT volume covers a 6 × 6 × 2 mm³ area of the retina and is stored as a 200 × 200 × 1024 (horizontal × vertical × depth) data cube. Selected B-scans were then extracted to form the dataset.
 
+[OCTseg-Zeiss example figure](./Fig1.png)
+
 - This package was **tested** with:
   - Python 3.8.16 and PyTorch 1.12.1
   - CUDA 11.3.1 and cuDNN 8.2.0.53-11.3 (for GPU training)
 
-- An **example dataset** is provided [here](./data/dataset-example-onh-3subsets) to **only show the structure of the dataset folder**. To use the code or train it with a different dataset, you should preserve the same directory structure.
+- An **example dataset** is provided [here](./data/dataset-example-onh-3subsets) to **only show the structure of the dataset folder**. The dataset is proprietery and cannot be shared. To use the code or train it with a different dataset, you should preserve the same directory structure.
 
 - A **pretrained model** is saved [here](./my-pretrained-model). 
 
@@ -59,4 +61,6 @@ The output results will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets/predict/n
 
 
 # Reference
+- The dataset has been prepared based on the following paper:
+
 - The U-Net architecture is adapted from [MGU-Net](https://github.com/Jiaxuan-Li/MGU-Net).
