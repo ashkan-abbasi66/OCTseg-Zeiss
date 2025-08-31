@@ -2,7 +2,7 @@
 # OCTseg-Zeiss
 
 **This is a U-Net based method for Retinal layer segmentation from OCT B-scans.** 
-- The OCT b-scamn images are assumed to be acquired with a **Cirrus HD-OCT (Zeiss)**. 
+- The OCT b-scan images are assumed to be acquired with a **Cirrus HD-OCT (Zeiss)**. 
   - Each OCT volume covers a 6 × 6 × 2 mm³ area of the retina and is stored as a 200 × 200 × 1024 (horizontal × vertical × depth) data cube. Selected B-scans were then extracted to form the dataset.
 
 <p align="center">
