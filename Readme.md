@@ -5,7 +5,10 @@
 - The OCT b-scamn images are assumed to be acquired with a **Cirrus HD-OCT (Zeiss)**. 
   - Each OCT volume covers a 6 × 6 × 2 mm³ area of the retina and is stored as a 200 × 200 × 1024 (horizontal × vertical × depth) data cube. Selected B-scans were then extracted to form the dataset.
 
-[OCTseg-Zeiss example figure](./Fig1.png)
+<p align="center">
+<img width="33%" src=./Fig1.png>
+</p>
+
 
 - This package was **tested** with:
   - Python 3.8.16 and PyTorch 1.12.1
