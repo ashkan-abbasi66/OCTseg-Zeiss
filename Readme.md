@@ -16,7 +16,7 @@
 
 - An **example dataset** is provided [here](./my-dataset-example) to **only show the structure of the dataset folder**. The dataset is proprietery and cannot be shared. To use the code or train it with a different dataset, you should preserve the same directory structure.
 
-- A **pretrained model** is saved [here](./my-pretrained-model). 
+- A **pretrained model** is saved [here](./my-pretrained-model). This model can be used for running the model on your own set of OCT b-scan images. See [here](#test-the-pretrained-model) and provide the appropriate path.
 
 ---
 
@@ -64,6 +64,6 @@ The output results will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets/predict/n
 
 
 # Reference
-- The dataset has been prepared based on the following paper:
-
-- The U-Net architecture is adapted from [MGU-Net](https://github.com/Jiaxuan-Li/MGU-Net).
+1. The dataset has been prepared based on this paper:
+  Sedai, S., Antony, B., Rai, R., Jones, K., Ishikawa, H., Schuman, J., Wollstein, G., & Garnavi, R. (2019). *Uncertainty guided semi-supervised segmentation of retinal layers in OCT images*. In International Conference on Medical Image Computing and Computer-Assisted Intervention (pp. 282–290). Springer, Cham. [https://doi.org/10.1007/978-3-030-32239-7_32](https://doi.org/10.1007/978-3-030-32239-7_32)
+2. The U-Net architecture is adapted from [MGU-Net](https://github.com/Jiaxuan-Li/MGU-Net).
