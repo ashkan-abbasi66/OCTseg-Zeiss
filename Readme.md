@@ -14,7 +14,7 @@
   - Python 3.8.16 and PyTorch 1.12.1
   - CUDA 11.3.1 and cuDNN 8.2.0.53-11.3 (for GPU training)
 
-- An **example dataset** is provided [here](./data/dataset-example-onh-3subsets) to **only show the structure of the dataset folder**. The dataset is proprietery and cannot be shared. To use the code or train it with a different dataset, you should preserve the same directory structure.
+- An **example dataset** is provided [here](./my-dataset-example) to **only show the structure of the dataset folder**. The dataset is proprietery and cannot be shared. To use the code or train it with a different dataset, you should preserve the same directory structure.
 
 - A **pretrained model** is saved [here](./my-pretrained-model). 
 
