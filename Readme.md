@@ -62,6 +62,16 @@ When running a pretrained model on OCT B-scans without corresponding segmentatio
 
 The output results will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets/predict/nyu-segmenter_0.001`
 
+## Benchmarking the method
+Since I did not have access to the exact dataset of the reference 1, a direct comparison is not feasible. However, my results are also based on the same cohort. In the reference 1, the average dice coefficient for the RNFL thickness map and all layes (when their method was trained in a fully supervised manner) were reported to be 0.88 and 0.8, respectively. Here are mine:
+
+| **Average Dice** | RNFL (Dice_1) | GCL+IPL (Dice_2) | INL (Dice_3) | OPL (Dice_4) | ONL (Dice_5) | IS (Dice_6) | OS (Dice_7) | RPE (Dice_8) |
+|------------------|---------------|------------------|--------------|--------------|--------------|-------------|-------------|--------------|
+| **0.84**         | 0.87          | 0.84             | 0.82         | 0.76         | 0.93         | 0.82        | 0.87        | 0.85         |
+
+| **mpa**          | pa_1 | pa_2 | pa_3 | pa_4 | pa_5 | pa_6 | pa_7 | pa_8 |
+|------------------|------|------|------|------|------|------|------|------|
+| **0.85**         | 0.87 | 0.86 | 0.81 | 0.76 | 0.93 | 0.82 | 0.86 | 0.86 |
 
 # Reference
 1. The dataset has been prepared based on this paper:
