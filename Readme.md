@@ -77,7 +77,7 @@ Since I did not have access to the exact dataset used in Reference 1, a direct c
 
 | **Average Dice** | RNFL (Dice_1) | GCL+IPL (Dice_2) | INL (Dice_3) | OPL (Dice_4) | ONL (Dice_5) | IS (Dice_6) | OS (Dice_7) | RPE (Dice_8) |
 |------------------|---------------|------------------|--------------|--------------|--------------|-------------|-------------|--------------|
-| **0.84**         | 0.87          | 0.85             | 0.82         | 0.75         | 0.93         | 0.82        | 0.87        | 0.85         |
+| **0.84**         | **0.87**          | 0.85             | 0.82         | 0.75         | 0.93         | 0.82        | 0.87        | 0.85         |
 
 
 # Reference
