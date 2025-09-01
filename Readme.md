@@ -92,6 +92,7 @@ The segmentation model can be applied to compute retinal nerve fiber layer thick
 
 
 **RNFLT computation command:**:
+
 ```commandline
 python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-dataset-example/ --log_path ./logs-temp/
 ```
@@ -100,6 +101,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
 - The resulting segmentation volume is optionally saved as a `.npy` file.
 - A corresponding RNFL thickness map is computed and saved as a `.png` file.
 - All outputs are stored in the directory specified by `--log_path`.
+
 
 **Notes**: 
 - **Optic disc exclusio**n: RNFLT is typically reported after excluding the optic disc region. For simplicity, this script computes RNFLT directly from the layer segmentation results without disc exclusion.
