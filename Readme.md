@@ -20,9 +20,14 @@
 
 ## Train the model
 
-An **example dataset** is provided [here](./my-dataset-example) to **only show the structure of the dataset folder**. Our dataset is proprietery and cannot be shared. However, a **pretrained model** is available, and to train the model on your own dataset you have to preserve the same directory structure.
 
-**Example command:** 
+An **example dataset** is provided [here](./my-dataset-example) to only illustrate the required folder structure. Since our dataset is proprietary, it cannot be shared. To train the model on your own data, you must preserve the same directory structure. 
+
+
+Note: A **pretrained model** is also available. Please see the next section for instructions on testing it.
+
+
+**Training command:** 
 
 `python main_nyupitt.py --lr 0.001 --batch-size 1 --epoch 50 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --test-name nyu-segmenter`
 
@@ -43,7 +48,7 @@ After training, the model will be saved at `d:/logs/OCTseg-Zeiss/onh-3subsets/tr
 ### With Ground-Truth Segmentation Masks
 Test images are stored at `onh-3subsets\test\img` and their corresponding masks are stored at `onh-3subsets\test\mask`. Then, you need to specify the `--model-path`. 
 
-**Example command:**
+**Test command:**
 
 `python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model/model_best.pth.tar`
 
@@ -53,7 +58,7 @@ When running a pretrained model on OCT B-scans without corresponding segmentatio
 1. Use the `--predict` flag
 2. Ensure the data directory contains a `onh-3subsets/predict/img` folder where input images (without ground-truth masks) are stored.
 
-**Example command:**
+**Test command:**
 
 `python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model/model_best.pth.tar --predict`
 
