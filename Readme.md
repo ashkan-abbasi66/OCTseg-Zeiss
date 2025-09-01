@@ -81,6 +81,10 @@ Since the exact dataset from Reference 1 was not available, a direct comparison 
 
 # Application to RNFL thickness map computation
 
+<p align="center">
+<img width="33%" src=./Fig2.png>
+</p>
+
 The segmentation model can be applied to compute retinal nerve fiber layer thickness maps (RNFLTs) from a folder of OCT volumes.
 
 
