@@ -18,7 +18,7 @@
 
 # USAGE EXAMPLE
 
-## Train the model
+## Train the Model
 
 
 An **example dataset** is provided [here](./my-dataset-example) to only illustrate the required folder structure. Since our dataset is proprietary, it cannot be shared. To train the model on your own data, you must preserve the same directory structure. 
