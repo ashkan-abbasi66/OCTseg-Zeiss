@@ -102,8 +102,8 @@ This command performs slice-by-slice segmentation of each OCT volume:
 
 
 **Notes**: 
-- **Optic disc exclusio**n: RNFLT is typically reported after excluding the optic disc region. For simplicity, this script computes RNFLT directly from the layer segmentation results without disc exclusion.
-- **Colormap choice**: Here, a grayscale colormap is used for visualization. Commercial devices usually employ a different colormap (e.g., jet) for better visual contrast.
+- **Optic disc exclusio**n: RNFLT may be better visualized if optic disc is excluded. For simplicity, this script does not consider optic disc exclusion.
+- **Colormap choice**: Here, a grayscale colormap is used for visualization. Commercial devices usually employ a different colormap (e.g., `jet` like colormap) for better visual contrast.
 
 
 # Reference
