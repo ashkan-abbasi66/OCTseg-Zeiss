@@ -1,9 +1,6 @@
 """
 USAGE:
-    srun -u -p gpu --gres gpu:v100:1 --mem-per-cpu=32GB --time=0-2
-    python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 -date-dir ./ --log_path ./logs-temp/
-Output:
-    logs/nyu_for_annotation/predict/osmgunet_0.001_t1
+    python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-dataset-example/ --log_path ./logs-temp/
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -96,7 +93,6 @@ if __name__ == '__main__':
     # path setting
 
     dataset_name = args.data_dir.split('/')[-1]
-    args.log_path = f"logs/"
 
     print('#' * 15, "IMPORTANT PATHS", '#' * 15)
     print('data_dir:',args.data_dir)

@@ -9,8 +9,30 @@ import numpy as np
 import data.seg_transforms as dt
 from data.seg_transforms import Compose as MyCompose
 import matplotlib.pyplot as plt
+import os
 
-from read_volume_and_compute_enface import get_volume_and_enface_image
+def get_volume_and_enface_image(oct_filepath):
+    """
+    Reading Cirrus HD-OCT (Zeiss, Dublin, CA, USA) image volumes from `.img` files
+
+    vol: (B-scan index (y), depth axis (z), lateral axes (x)) - 200 x 1024 x 200
+    enface: A 200 x 200 image obtained by averaging along z axis.
+    """
+    if not os.path.exists(oct_filepath):
+        return -1
+
+    with open(oct_filepath, 'rb') as f:
+        numpy_data = np.fromfile(f, np.dtype('B'))
+
+    vol = np.reshape(numpy_data, (200, 1024, 200))
+    vol = np.flip(vol, axis=1)  # For Enface image, if you make this line a comment, it won't change the output.
+                                  # In fact, flipping along Z axis does not change anything except that it changes
+                                  # the order of B-scans.
+    vol = np.flip(vol, axis=2)
+
+    enface = np.mean(vol, axis=1)
+
+    return vol, enface
 
 
 class segListVolume(Dataset):
@@ -58,21 +80,33 @@ class segListVolume(Dataset):
 
 if __name__ == "__main__":
 
+    # Check this for two volume
+
+
+
+
     PIXEL_MEAN = [0.14162449977018857] * 3
     PIXEL_STD = [0.09798050174952816] * 3
     normalize = dt.Normalize(mean=PIXEL_MEAN, std=PIXEL_STD)
     # t = [dt.ToTensor(), normalize]
     t = []
 
-    vol_path = "e:/data/NYU-OCTseg-dataset/nyu_for_annotation/Normal-ONH-000420-2010-04-22-10-53-54-OD.npy"
+    vol_path = "../my-dataset-example/example-Optic Disc Cube 200x200-OS-cube_z.img"
 
     # vol_data = segListVolume(vol_path, dt.Compose(t))
     vol_data = segListVolume(vol_path, t)
 
-    data = vol_data[100]
-    plt.imshow(data[1].numpy(), cmap="gray")
-    plt.title(f"Number of images {len(vol_data)} in this volume")
-    plt.show()
+    data = vol_data.vol
+    plt.imshow(data[10],cmap = "gray")
+    plt.title(f"One slice from a volume with {len(vol_data)} images")
 
-    assert data[0].ndim == 3, "The data[0] must be 3-D"
+    assert data.ndim == 3, "The data[0] must be 3-D"
     # this is what we may use as a input to a CNN.
+
+
+    # TEST reading OCT
+    vol, enface_image = get_volume_and_enface_image(vol_path)
+    plt.figure()
+    plt.imshow(enface_image, cmap="gray")
+    plt.title(f"Enface image's shape:{enface_image.shape}")
+    plt.show()

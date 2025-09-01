@@ -28,7 +28,7 @@ def get_volume_and_enface_image(oct_filepath):
 
 
 if __name__ == '__main__':
-    oct_filepath = "1044_Optic Disc Cube 200x200_1-10-2013_8-28-1_OS_sn148535_cube_z.img"
+    oct_filepath = "example-Optic Disc Cube 200x200-OS-cube_z.img"
 
     vol, enface_image = get_volume_and_enface_image(oct_filepath)
     plt.figure()

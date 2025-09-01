@@ -80,6 +80,28 @@ Since the exact dataset from Reference 1 was not available, a direct comparison 
 | **0.84**         | **0.87**          | 0.85             | 0.82         | 0.75         | 0.93         | 0.82        | 0.87        | 0.85         |
 
 
+
+## Application to RNFL thickness map computation
+
+The segmentation model can be applied to compute retinal nerve fiber layer thickness maps (RNFLTs) from a folder of OCT volumes.
+
+
+**Requirements**:
+- A pretrained model checkpoint (e.g., `./my-pretrained-model/model/model_best.pth.tar`)
+- A dataset directory containing `.img` OCT volume files. An example is saved in `./my-dataset-example/` folder.
+
+
+**RNFLT computation command:**:
+```commandline
+python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-dataset-example/ --log_path ./logs-temp/
+```
+
+This command performs slice-by-slice segmentation of each OCT volume:
+- The resulting segmentation volume is optionally saved as a `.npy` file.
+- A corresponding RNFL thickness map is computed and saved as a `.png` file.
+- All outputs are stored in the directory specified by `--log_path`.
+
+
 # Reference
 1. The dataset has been prepared based on this paper:
   Sedai, S., Antony, B., Rai, R., Jones, K., Ishikawa, H., Schuman, J., Wollstein, G., & Garnavi, R. (2019). *Uncertainty guided semi-supervised segmentation of retinal layers in OCT images*. In International Conference on Medical Image Computing and Computer-Assisted Intervention (pp. 282–290). Springer, Cham. [https://doi.org/10.1007/978-3-030-32239-7_32](https://doi.org/10.1007/978-3-030-32239-7_32)
