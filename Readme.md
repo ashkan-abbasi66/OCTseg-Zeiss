@@ -71,7 +71,7 @@ python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --dat
 The output results will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets/predict/nyu-segmenter_0.001`
 
 
-## Benchmarking the method
+## Benchmarking the model
 
 Since the exact dataset from Reference 1 was not available, a direct comparison is not possible. My results, however, are based on the same cohort. In Table 1 of Reference 1, the average Dice scores have been reported as **0.80** across all layers and **0.88** for the RNFL layer in the fully supervised setting. My results are as follows:
 
