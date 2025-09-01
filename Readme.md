@@ -20,7 +20,7 @@
 
 ## Train the model
 
-- An **example dataset** is provided [here](./my-dataset-example) to **only show the structure of the dataset folder**. The dataset is proprietery and cannot be shared. To use the code or train it with a different dataset, you should preserve the same directory structure.
+An **example dataset** is provided [here](./my-dataset-example) to **only show the structure of the dataset folder**. Our dataset is proprietery and cannot be shared. However, a **pretrained model** is available, and to train the model on your own dataset you have to preserve the same directory structure.
 
 **Example command:** 
 
