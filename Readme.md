@@ -44,7 +44,7 @@ Each subdirectory will contain an output folder named `nyu-segmenter_0.001`, whe
 After training, the model will be saved at `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`. You can then test it in either of the following two scenarios.
 
 
-**Note**: The commands below assume you have trained the model as described in the previous section. If you plan to use the provided pretrained model (available [here](./my-pretrained-model)), make sure to set the `--model-path` accordingly.
+**Note**: The commands below assume you have trained the model as described in the previous section. In order to use the provided pretrained model (available [here](./my-pretrained-model)), make sure to set the `--model-path` accordingly.
 
 
 ### With Ground-Truth Segmentation Masks
