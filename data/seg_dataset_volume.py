@@ -10,6 +10,8 @@ import data.seg_transforms as dt
 from data.seg_transforms import Compose as MyCompose
 import matplotlib.pyplot as plt
 
+from read_volume_and_compute_enface import get_volume_and_enface_image
+
 
 class segListVolume(Dataset):
     def __init__(self, volume_path, transforms):
@@ -19,8 +21,9 @@ class segListVolume(Dataset):
         if self.transforms != []:
             if not isinstance(self.transforms, MyCompose):
                 self.transforms = MyCompose(self.transforms)
-        if volume_path.split('.')[-1] == "npy":
-            self.vol = np.load(volume_path)  # Shape (200, 1024, 200) - y * z * x
+        if volume_path.split('.')[-1] == "img":
+            # self.vol = np.load(volume_path)  # Shape (200, 1024, 200) - y * z * x
+            self.vol, _ = get_volume_and_enface_image(volume_path)
         else:
             raise Exception("NOT SUPPORTED FILE TYPE")
 

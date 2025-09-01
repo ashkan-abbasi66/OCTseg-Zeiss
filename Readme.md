@@ -73,7 +73,7 @@ The output results will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets/predict/n
 
 ## Benchmarking the method
 
-Since I did not have access to the exact dataset used in Reference 1, a direct comparison is not feasible. However, my results are based on the same cohort. In Reference 1, the reported average Dice coefficients were 0.88 for the RNFL thickness map and 0.80 across all layers when their method was trained in a fully supervised manner. My results are as follows:
+Since the exact dataset from Reference 1 was not available, a direct comparison is not possible. My results, however, are based on the same cohort. Reference 1 reported average Dice scores of 0.80 across all layers and 0.88 for the RNFL layer in the fully supervised setting (Table 1; Reference 1). My results are as follows:
 
 | **Average Dice** | RNFL (Dice_1) | GCL+IPL (Dice_2) | INL (Dice_3) | OPL (Dice_4) | ONL (Dice_5) | IS (Dice_6) | OS (Dice_7) | RPE (Dice_8) |
 |------------------|---------------|------------------|--------------|--------------|--------------|-------------|-------------|--------------|

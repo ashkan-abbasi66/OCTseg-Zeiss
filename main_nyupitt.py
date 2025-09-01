@@ -2,20 +2,18 @@
 N_CLASSES = 9  # including background
 
 import os
-# os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 import os.path as osp
-from os.path import exists
 import argparse
-# import json
+
 import logging
 import time
 import copy
-##### pytorch library #####
+
 import torch
 from torch import nn
 import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
-##### My own library #####
+
 import data.seg_transforms as dt
 from data.seg_dataset import segList
 from utils.logger import Logger
@@ -41,7 +39,7 @@ def create_directory(dir_path):
 # training process
 def train(args,train_loader, model, criterion2, optimizer,epoch,print_freq=10):
     # trains for one batch - it is used in "train_seg" function.
-   # set the AverageMeter 
+    # set the AverageMeter
     batch_time = AverageMeter()
     losses = AverageMeter()
     dice = AverageMeter()
