@@ -79,7 +79,7 @@ Since the exact dataset from Reference 1 was not available, a direct comparison 
 
 
 
-# Application to RNFL thickness map computation
+# Application to RNFL Thickness Map Computation
 
 <p align="center">
 <img width="33%" src=./Fig2.png>
