@@ -101,6 +101,10 @@ This command performs slice-by-slice segmentation of each OCT volume:
 - A corresponding RNFL thickness map is computed and saved as a `.png` file.
 - All outputs are stored in the directory specified by `--log_path`.
 
+**Notes**: 
+- **Optic disc exclusio**n: RNFLT is typically reported after excluding the optic disc region. For simplicity, this script computes RNFLT directly from the layer segmentation results without disc exclusion.
+- **Colormap choice**: Here, a grayscale colormap is used for visualization. Commercial devices usually employ a different colormap (e.g., jet) for better visual contrast.
+
 
 # Reference
 1. The dataset has been prepared based on this paper:
