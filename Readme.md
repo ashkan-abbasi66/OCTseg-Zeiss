@@ -111,6 +111,8 @@ If you find this repository helpful, please consider **starring it** or **citing
 
 # References
 
+The following references were utilized in the development of this repository:
+
 1. The dataset has been prepared based on this paper:
   Sedai, S., Antony, B., Rai, R., Jones, K., Ishikawa, H., Schuman, J., Wollstein, G., & Garnavi, R. (2019). *Uncertainty guided semi-supervised segmentation of retinal layers in OCT images*. In International Conference on Medical Image Computing and Computer-Assisted Intervention (pp. 282–290). Springer, Cham. [https://doi.org/10.1007/978-3-030-32239-7_32](https://doi.org/10.1007/978-3-030-32239-7_32)
 
