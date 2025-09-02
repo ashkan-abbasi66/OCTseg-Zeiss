@@ -37,7 +37,7 @@ Each subdirectory contains an output folder named `nyu-segmenter_0.001`, where t
 
 # Test the Pretrained Model
 
-You can use the pretrained model in two ways. From the training section, the model is saved at: `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`. However, in the following examples, we instead reference the pretrained model provided in this repository ([./my-pretrained-model](./my-pretrained-model)) to set the `--model-path`.
+You can use the pretrained model in two ways: with or without ground-truth masks. From the training section, the model is saved at: `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`. However, in the following examples, we instead reference the pretrained model provided in this repository ([./my-pretrained-model](./my-pretrained-model)) to set the `--model-path`.
 
 ## With Ground-Truth Segmentation Masks
 Assuming the test images are stored in `onh-3subsets\test\img` and their segmentation masks in `onh-3subsets\test\mask`, inference can be executed using the command below. 
