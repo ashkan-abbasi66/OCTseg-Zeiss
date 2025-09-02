@@ -29,10 +29,10 @@ An **example dataset** is provided [here](./my-example-datasets/onh-3subsets) to
 python main_nyupitt.py --lr 0.001 --batch-size 1 --epoch 50 --data-dir ./my-example-datasets/onh-3subsets --log_path ./logs --test-name nyu-segmenter
 ```
 
-After running this command, the trained model and test outputs will be saved in `./logs/OCTseg-Zeiss/onh-3subsets` under two subdirectories: `train` and `test`.
+After running this command, the trained model and test outputs will be saved in `./logs/OCTseg-Zeiss/onh-3subsets/` under two subdirectories: `train` and `test`.
 Each subdirectory contains an output folder named `nyu-segmenter_0.001`, where the folder name is derived from the `--test-name` and `--lr` arguments.
-- The trained model (best and last checkpoints) will be stored at `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`.
-- Test outputs will be saved at `d:\logs\OCTseg-Zeiss\onh-3subsets\test\nyu-segmenter_0.001`.
+- The trained model (best and last checkpoints) will be stored at `./logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`.
+- Test outputs will be saved at `./logs/OCTseg-Zeiss/onh-3subsets/test/nyu-segmenter_0.001`.
 
 
 # Test the Pretrained Model
@@ -40,12 +40,13 @@ Each subdirectory contains an output folder named `nyu-segmenter_0.001`, where t
 You can use the pretrained model in two ways: with or without ground-truth masks.
 
 ## With Ground-Truth Segmentation Masks
-Assuming the test images are stored in `onh-3subsets\test\img` and their segmentation masks in `onh-3subsets\test\mask`, inference can be executed using the command below. 
+
+Assuming the test images are located in [onh-3subsets/test/img](./my-example-datasets/onh-3subsets/test/img) and their corresponding segmentation masks in [onh-3subsets/test/mask](./my-example-datasets/onh-3subsets/test/mask), you can run inference using the following command, specifying the pretrained model path with `--model-path`.
 
 **Test command:**
 
 ```commandline
-python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path ./my-pretrained-model/model/model_best.pth.tar
+python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir ./my-example-datasets/onh-3subsets --log_path ./logs --model-path ./my-pretrained-model/model/model_best.pth.tar
 ```
 
 ## Without Segmentation Masks
@@ -57,10 +58,10 @@ When running a pretrained model on OCT B-scans without corresponding segmentatio
 **Test command:**
 
 ```commandline
-python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path ./my-pretrained-model/model/model_best.pth.tar --predict
+python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir ./my-example-datasets/onh-3subsets --log_path ./logs --model-path ./my-pretrained-model/model/model_best.pth.tar --predict
 ```
 
-The output results will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets/predict/nyu-segmenter_0.001`
+The output results will be saved in `./logs/OCTseg-Zeiss/onh-3subsets/predict/nyu-segmenter_0.001`
 
 
 # Benchmarking the model
@@ -90,7 +91,7 @@ The segmentation model can be applied to compute retinal nerve fiber layer thick
 **RNFLT computation command:**:
 
 ```commandline
-python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-example-datasets/onh-oct-volumes --log_path ./logs-temp/
+python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-example-datasets/onh-oct-volumes --log_path ./logs/
 ```
 
 This command performs slice-by-slice segmentation of each OCT volume:
