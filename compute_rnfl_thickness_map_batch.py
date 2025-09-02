@@ -1,6 +1,17 @@
 """
-USAGE:
-    python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-dataset-example/ --log_path ./logs-temp/
+Module for computing RNFL thickness maps from OCT volumes using a pretrained segmentation model.
+
+This script processes OCT volume files (.img) to:
+1. Perform retinal layer segmentation using a pretrained U-Net model
+2. Generate RNFL thickness maps from the segmentation results
+3. Save both segmentation volumes (.npy) and thickness maps (.png)
+
+The script expects:
+- A pretrained model checkpoint path
+- Input directory containing .img OCT volume files
+- Output directory path for saving results
+
+Each OCT volume should be 200x1024x200 (horizontal x depth x vertical)
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,6 +33,17 @@ from torch.autograd import Variable
 
 
 def seg_volume(args, test_loader, to_save_path):
+    """
+    Segment an OCT volume using the pretrained model.
+
+    Args:
+        args: Namespace object containing runtime arguments including device and model path
+        test_loader: DataLoader providing OCT volume slices
+        to_save_path: Path to save the segmentation volume (.npy)
+
+    Returns:
+        numpy.ndarray: Segmented volume of shape (200, 1024, 200) with class labels
+    """
     # load the model
     print('Loading test model ...')
     net = OSMGUNet()
@@ -112,6 +134,7 @@ if __name__ == '__main__':
     test_phase = "predict"
     t = [dt.ToTensor(), normalize]
 
+    # Handle both directory and single file inputs
     if os.path.isdir(args.data_dir):
         all_files = os.listdir(args.data_dir)
     else:
@@ -142,12 +165,14 @@ if __name__ == '__main__':
             # output = np.load(
             #     r"e:/logs/Normal-ONH-000420-2010-04-22-10-53-54-OD.npy\predict\osmgunet_0.001_t1\Normal-ONH-000420-2010-04-22-10-53-54-OD.npy")
 
+            # Generate RNFL thickness map by counting RNFL pixels (class 0) in each A-scan
             heatmap = np.zeros((200, 200))
             for i in range(200):  # We have 200 slices (b-scans), each with size of 1024x200
-                # Count pixels classified as 0 in the current slice
+                # Count pixels classified as 0 (RNFL) in the current slice
                 bscan = output[i, :, :]
                 slice_counts = np.count_nonzero(bscan == 0, axis=0)
                 heatmap[i, :] = slice_counts
+            # Normalize thickness values to [0,1] range
             heatmap /= heatmap.reshape(-1).max()
 
             plt.imsave(os.path.join(test_result_path, file.split('.')[0] + '-rnfl-thickness.png'),

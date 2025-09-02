@@ -1,4 +1,34 @@
+"""
+OCT retinal layer segmentation using U-Net based deep learning model.
 
+This script implements training and testing functionality for segmenting retinal layers
+from OCT B-scans acquired with Cirrus HD-OCT (Zeiss). The model segments 8 retinal layers:
+RNFL, GCL+IPL, INL, OPL, ONL, IS, OS and RPE.
+
+Key Features:
+- Training and validation on OCT image datasets
+- Testing with or without ground truth segmentation masks
+- Calculation of Dice scores and pixel accuracy metrics
+- Visualization of segmentation results
+- Support for both CPU and GPU processing
+
+Example Usage:
+    See Readme.md for detailed instructions on running the script.
+
+The script expects data organized in specific folder structure:
+    data_dir/
+        train/
+            img/    - Training images
+            mask/   - Training segmentation masks
+        eval/
+            img/    - Validation images  
+            mask/   - Validation masks
+        test/
+            img/    - Test images
+            mask/   - Test masks
+        predict/     (OPTIONAL)
+            img/    - Images to predict on (no masks required)
+"""
 N_CLASSES = 9  # including background
 
 import os
@@ -38,6 +68,25 @@ def create_directory(dir_path):
 
 # training process
 def train(args,train_loader, model, criterion2, optimizer,epoch,print_freq=10):
+    """Train model for one epoch.
+
+    Performs training on batches of OCT images, computing loss and Dice scores
+    for the segmentation output. Updates model weights using backpropagation.
+
+    Args:
+        args: Arguments containing training parameters 
+        train_loader: DataLoader for training data
+        model: Neural network model
+        criterion2: Loss function
+        optimizer: Optimization algorithm
+        epoch: Current epoch number
+        print_freq: Print metrics every N iterations
+
+    Returns:
+        tuple containing:
+            - Average loss for the epoch
+            - Average Dice scores (overall and per layer)
+    """
     # trains for one batch - it is used in "train_seg" function.
     # set the AverageMeter
     batch_time = AverageMeter()
@@ -111,6 +160,18 @@ def train(args,train_loader, model, criterion2, optimizer,epoch,print_freq=10):
 
 # evaluation process
 def eval_predict(phase, args, eval_data_loader, model, result_path = None):
+    """Run prediction on dataset without ground truth masks.
+
+    Performs inference using trained model and saves visualization results.
+    Used when only input images are available without segmentation masks.
+
+    Args:
+        phase: Current phase ('predict')
+        args: Runtime arguments
+        eval_data_loader: DataLoader for test images
+        model: Trained neural network model
+        result_path: Path to save visualization results
+    """
     batch_time = AverageMeter()
     model.eval()
     end = time.time()
@@ -136,6 +197,24 @@ def eval_predict(phase, args, eval_data_loader, model, result_path = None):
             print('Saved visualized results!')
             
 def eval(phase, args, eval_data_loader, model,result_path = None, logger = None):
+    """Evaluate model performance on validation/test set.
+
+    Computes metrics including Dice scores and pixel accuracy for each retinal layer.
+    Saves visualization results and logs metrics.
+
+    Args:
+        phase: Current phase ('train'/'eval'/'test') 
+        args: Runtime arguments
+        eval_data_loader: DataLoader for evaluation
+        model: Neural network model
+        result_path: Path to save results
+        logger: Logger to record metrics
+
+    Returns:
+        tuple containing:
+            - Final Dice scores (overall and per layer)
+            - List of Dice scores for each image
+    """
     # set the AverageMeter 
     batch_time = AverageMeter()
     dice = AverageMeter()
@@ -272,6 +351,21 @@ def eval(phase, args, eval_data_loader, model,result_path = None, logger = None)
 
 ###### train ######
 def train_seg(args,train_result_path,train_loader,eval_loader):
+    """Main training function.
+
+    Handles the complete training process including:
+    - Setting up loggers and metrics tracking
+    - Initializing model, loss and optimizer
+    - Training for specified epochs
+    - Periodic evaluation on validation set
+    - Model checkpointing
+
+    Args:
+        args: Training arguments/parameters
+        train_result_path: Path to save training results
+        train_loader: DataLoader for training data
+        eval_loader: DataLoader for validation data
+    """
     # logger setting
     logger_train = Logger(osp.join(train_result_path,'dice_epoch.txt'), title='dice',resume=False)
     metric_list = ['Epoch', 'Dice_Train', 'Dice_Val']
@@ -337,6 +431,18 @@ def train_seg(args,train_result_path,train_loader,eval_loader):
 
 ###### test ######
 def test_seg(args, test_result_path, test_loader):
+    """Test trained model on test dataset.
+
+    Loads trained model and evaluates performance on test set.
+    Can handle both scenarios:
+    - Testing with ground truth masks (computing metrics)
+    - Prediction only (without ground truth)
+
+    Args:
+        args: Testing arguments including model path
+        test_result_path: Path to save test results
+        test_loader: DataLoader for test data
+    """
 
     # load the model
     print('Loading test model ...')

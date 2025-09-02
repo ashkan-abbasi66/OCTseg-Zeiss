@@ -2,6 +2,7 @@
 Goal:
     A class similar to `seg_dataset`, but for an image volume instead of a folder containing images
 
+
 """
 import torch
 from torch.utils.data import Dataset
@@ -91,7 +92,7 @@ if __name__ == "__main__":
     # t = [dt.ToTensor(), normalize]
     t = []
 
-    vol_path = "../my-dataset-example/example-Optic Disc Cube 200x200-OS-cube_z.img"
+    vol_path = "../my-example-datasets/example-Optic Disc Cube 200x200-OS-cube_z.img"
 
     # vol_data = segListVolume(vol_path, dt.Compose(t))
     vol_data = segListVolume(vol_path, t)
