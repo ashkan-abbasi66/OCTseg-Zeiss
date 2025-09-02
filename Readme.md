@@ -7,7 +7,7 @@
   - Each OCT volume covers a 6 × 6 × 2 mm³ area of the retina and is stored as a 200 × 200 × 1024 (horizontal × vertical × depth) data cube. Selected B-scans were then extracted to form the dataset.
 
 <p align="center">
-<img width="33%" src=./Fig1.png>
+<img width="33%" src=./assets/Fig1.png>
 </p>
 
 
@@ -77,7 +77,7 @@ Since the exact dataset from Reference 1 was not available, a direct comparison 
 # Application to RNFL Thickness Map Computation
 
 <p align="center">
-<img width="33%" src=./Fig2.png>
+<img width="33%" src=./assets/Fig2.png>
 </p>
 
 The segmentation model can be applied to compute retinal nerve fiber layer thickness maps (RNFLTs) from a folder of OCT volumes.
