@@ -106,7 +106,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
 
 # Citation and References
 
-If you find this repository helpful, please consider **starring it** or **citing our work**.
+If you find this repository helpful, please consider **starring it** or **citing our work**. This repository was developed in the context of my work supervised by Prof. [Hiroshi Ishikawa](https://scholar.google.com/citations?user=Yl6u5eYAAAAJ&hl=en) at Oregon Health & Science University (OHSU).
 
 The following references were utilized in the development of this repository:
 
