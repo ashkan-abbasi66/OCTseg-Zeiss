@@ -1,7 +1,8 @@
 
 # OCTseg-Zeiss
 
-**This is a U-Net based method for Retinal layer segmentation from OCT B-scans.** 
+**This is a U-Net–based method for retinal layer segmentation from OCT B-scans, including code for training, testing, a pretrained model, and RNFL thickness map computation.**
+
 - The OCT b-scan images are assumed to be acquired with a **Cirrus HD-OCT (Zeiss)**. 
   - Each OCT volume covers a 6 × 6 × 2 mm³ area of the retina and is stored as a 200 × 200 × 1024 (horizontal × vertical × depth) data cube. Selected B-scans were then extracted to form the dataset.
 
@@ -19,10 +20,7 @@
 # Train the Model
 
 
-An **example dataset** is provided [here](./my-dataset-example) to only illustrate the required folder structure. Since our dataset is proprietary, it cannot be shared. To train the model on your own data, you must preserve the same directory structure. 
-
-
-Note: A **pretrained model** is also available. Please see the next section for instructions on testing it.
+An **example dataset** is provided [here](./my-dataset-example) to only **illustrate the required folder structure**. The original dataset is proprietary and cannot be shared. To train the model on your own data, you must follow the same directory structure. 
 
 
 **Training command:** 
@@ -31,27 +29,23 @@ Note: A **pretrained model** is also available. Please see the next section for 
 python main_nyupitt.py --lr 0.001 --batch-size 1 --epoch 50 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --test-name nyu-segmenter
 ```
 
-The trained model and its test outputs will be saved under `d:/logs/OCTseg-Zeiss/onh-3subsets` in two subdirectories: `train` and `test`.
-Each subdirectory will contain an output folder named `nyu-segmenter_0.001`, where the folder name is derived from the `--test-name` and `--lr` arguments.
-- Path to the trained model: `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`. The best and last models will be saved.
-- Path to the test outputs: `d:\logs\OCTseg-Zeiss\onh-3subsets\test\nyu-segmenter_0.001`.
+After running this command, the trained model and test outputs will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets` under two subdirectories: `train` and `test`.
+Each subdirectory contains an output folder named `nyu-segmenter_0.001`, where the folder name is derived from the `--test-name` and `--lr` arguments.
+- The trained model (best and last checkpoints) will be stored at `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`.
+- Test outputs will be saved at `d:\logs\OCTseg-Zeiss\onh-3subsets\test\nyu-segmenter_0.001`.
 
 
 # Test the Pretrained Model
 
-After training, the model will be saved at `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`. You can then test it in either of the following two scenarios.
-
-
-**Note**: The commands below assume you have trained the model as described in the previous section. In order to use the provided pretrained model (available [here](./my-pretrained-model)), make sure to set the `--model-path` accordingly.
-
+You can use the pretrained model in two ways. From the training section, the model is saved at: `d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model`. However, in the following examples, we instead reference the pretrained model provided in this repository ([./my-pretrained-model](./my-pretrained-model)) to set the `--model-path`.
 
 ## With Ground-Truth Segmentation Masks
-Test images are stored at `onh-3subsets\test\img` and their corresponding masks are stored at `onh-3subsets\test\mask`. Then, you need to specify the `--model-path`. 
+Assuming the test images are stored in `onh-3subsets\test\img` and their segmentation masks in `onh-3subsets\test\mask`, inference can be executed using the command below. 
 
 **Test command:**
 
 ```commandline
-python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model/model_best.pth.tar
+python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path ./my-pretrained-model/model/model_best.pth.tar
 ```
 
 ## Without Segmentation Masks
@@ -63,7 +57,7 @@ When running a pretrained model on OCT B-scans without corresponding segmentatio
 **Test command:**
 
 ```commandline
-python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path d:/logs/OCTseg-Zeiss/onh-3subsets/train/nyu-segmenter_0.001/model/model_best.pth.tar --predict
+python main_nyupitt.py --test-name nyu-segmenter --lr 0.001 --batch-size 1 --data-dir d:/data/NYU-OCTseg-dataset/onh-3subsets --log_path d:/logs --model-path ./my-pretrained-model/model/model_best.pth.tar --predict
 ```
 
 The output results will be saved in `d:/logs/OCTseg-Zeiss/onh-3subsets/predict/nyu-segmenter_0.001`
@@ -112,7 +106,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
 
 # Citation and References
 
-If you find this repository helpful, please consider starring it or citing our work.
+If you find this repository helpful, please consider **starring it** or **citing our work**.
 
 The following references were utilized in the development of this repository:
 
