@@ -105,12 +105,13 @@ This command performs slice-by-slice segmentation of each OCT volume:
 - **Colormap choice**: Here, a grayscale colormap is used for visualization. Commercial devices usually employ a different colormap (e.g., `jet` like colormap) for better visual contrast.
 
 
-# Citation and References
+# Citation and Acknowledgement
 
 If you find this repository helpful, please consider **starring it** or **citing our work**. This repository was developed in the context of my work supervised by Prof. [Hiroshi Ishikawa](https://scholar.google.com/citations?user=Yl6u5eYAAAAJ&hl=en) at Oregon Health & Science University (OHSU).
 
-The following references were utilized in the development of this repository:
+# References
 
 1. The dataset has been prepared based on this paper:
   Sedai, S., Antony, B., Rai, R., Jones, K., Ishikawa, H., Schuman, J., Wollstein, G., & Garnavi, R. (2019). *Uncertainty guided semi-supervised segmentation of retinal layers in OCT images*. In International Conference on Medical Image Computing and Computer-Assisted Intervention (pp. 282–290). Springer, Cham. [https://doi.org/10.1007/978-3-030-32239-7_32](https://doi.org/10.1007/978-3-030-32239-7_32)
+
 2. The U-Net architecture is adapted from [MGU-Net](https://github.com/Jiaxuan-Li/MGU-Net).
