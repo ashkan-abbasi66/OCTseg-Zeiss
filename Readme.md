@@ -37,7 +37,7 @@ Each subdirectory contains an output folder named `nyu-segmenter_0.001`, where t
 
 # Test the Pretrained Model
 
-You can use the pretrained model in two ways: with or without ground-truth masks.
+You can use the pretrained model in two ways: with or without ground-truth masks. A ready-to-use pretrained model is provided at [./my-pretrained-model/model](./my-pretrained-model/model).
 
 ## With Ground-Truth Segmentation Masks
 
