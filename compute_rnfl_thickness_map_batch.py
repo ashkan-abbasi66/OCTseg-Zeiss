@@ -97,6 +97,22 @@ def seg_volume(args, test_loader, to_save_path):
 
         return output_volume
 
+def compute_rnfl_thickness_map(svol):
+    """
+    sval: segmented volume
+    """
+    # Count class 0 per A-scan
+    heatmap = np.zeros((200, 200))
+    for i in range(200):  # 200 B-scans (H=1024, W=200 assumed)
+        bscan = svol[i, :, :]
+        slice_counts = np.count_nonzero(bscan == 0, axis=0)
+        heatmap[i, :] = slice_counts
+
+    # Normalize to [0,1]
+    maxv = heatmap.reshape(-1).max()
+    if maxv > 0:
+        heatmap = heatmap / maxv
+    return heatmap
 
 if __name__ == '__main__':
 
@@ -165,15 +181,17 @@ if __name__ == '__main__':
             # output = np.load(
             #     r"e:/logs/Normal-ONH-000420-2010-04-22-10-53-54-OD.npy\predict\osmgunet_0.001_t1\Normal-ONH-000420-2010-04-22-10-53-54-OD.npy")
 
-            # Generate RNFL thickness map by counting RNFL pixels (class 0) in each A-scan
-            heatmap = np.zeros((200, 200))
-            for i in range(200):  # We have 200 slices (b-scans), each with size of 1024x200
-                # Count pixels classified as 0 (RNFL) in the current slice
-                bscan = output[i, :, :]
-                slice_counts = np.count_nonzero(bscan == 0, axis=0)
-                heatmap[i, :] = slice_counts
-            # Normalize thickness values to [0,1] range
-            heatmap /= heatmap.reshape(-1).max()
+            # # Generate RNFL thickness map by counting RNFL pixels (class 0) in each A-scan
+            # heatmap = np.zeros((200, 200))
+            # for i in range(200):  # We have 200 slices (b-scans), each with size of 1024x200
+            #     # Count pixels classified as 0 (RNFL) in the current slice
+            #     bscan = output[i, :, :]
+            #     slice_counts = np.count_nonzero(bscan == 0, axis=0)
+            #     heatmap[i, :] = slice_counts
+            # # Normalize thickness values to [0,1] range
+            # heatmap /= heatmap.reshape(-1).max()
+
+            heatmap = compute_rnfl_thickness_map(output)
 
             plt.imsave(os.path.join(test_result_path, file.split('.')[0] + '-rnfl-thickness.png'),
                        heatmap, cmap='gray')
