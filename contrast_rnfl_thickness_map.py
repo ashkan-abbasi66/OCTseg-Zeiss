@@ -1,6 +1,10 @@
 """
-The aim of this script is to compute a contrast-enhanced RNFL thickness map from a segmented volume.
-Using raw segmented values to generate a heatmap results in a low contrast thickness map.
+This script enhances visualization of RNFL thickness maps.
+Thickness maps generated from raw segmented values often have low contrast
+because the minimum and maximum values (mapped to 0 and 255) correspond to
+the background and optic disc regions rather than the nerve fiber layer of interest.
+
+The provided functions allow users to adjust contrast and color to produce a high-contrast, visually enhanced RNFL thickness map.
 """
 from compute_rnfl_thickness_map_batch import compute_rnfl_thickness_map
 import numpy as np
@@ -292,7 +296,7 @@ def show_heatmap_with_two_colormaps(heatmap, pmin, pmax):
     # cmap2 = make_modified_turbo_colormap()
     cmap2 = make_softjet_colormap()
     cmap2.set_bad("#c9c9c9")
-    
+
     # cmap2 = "jet"
     # cmap2 = "nipy_spectral"
 
