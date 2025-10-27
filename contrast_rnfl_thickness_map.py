@@ -5,6 +5,13 @@ because the minimum and maximum values (mapped to 0 and 255) correspond to
 the background and optic disc regions rather than the nerve fiber layer of interest.
 
 The provided functions allow users to adjust contrast and color to produce a high-contrast, visually enhanced RNFL thickness map.
+
+
+There is also a way to push more pixels into yellow/red:
+from matplotlib.colors import PowerNorm
+norm = PowerNorm(gamma=0.85)  # 0.7–0.9 makes warm colors appear sooner
+plt.imshow(img, cmap=cmap, norm=norm, vmin=vmin, vmax=vmax)
+
 """
 from compute_rnfl_thickness_map_batch import compute_rnfl_thickness_map
 import numpy as np
@@ -49,15 +56,28 @@ def make_softjet_colormap():
     # return softjet
 
     # Control points: (position, hex color). We widen 0.60–0.85 for yellow/orange.
+    # stops = [
+    #     (0.00, "#00103f"),  # deep navy
+    #     (0.15, "#0047ff"),  # royal blue
+    #     (0.33, "#00a5ff"),  # cyan-blue (muted)
+    #     (0.50, "#00e080"),  # green (slightly desaturated)
+    #     (0.60, "#ffff66"),  # start yellow (lighter)
+    #     (0.72, "#ffd24d"),  # warm yellow-orange
+    #     (0.85, "#ff9a33"),  # orange (stretched)
+    #     (1.00, "#e41e1e"),  # soft red (not neon)
+    # ]
     stops = [
         (0.00, "#00103f"),  # deep navy
-        (0.15, "#0047ff"),  # royal blue
-        (0.33, "#00a5ff"),  # cyan-blue (muted)
-        (0.50, "#00e080"),  # green (slightly desaturated)
-        (0.60, "#ffff66"),  # start yellow (lighter)
-        (0.72, "#ffd24d"),  # warm yellow-orange
-        (0.85, "#ff9a33"),  # orange (stretched)
-        (1.00, "#e41e1e"),  # soft red (not neon)
+        (0.10, "#003aa7"),  # dark blue
+        (0.22, "#0070ff"),  # blue
+        (0.34, "#00b5ff"),  # blue-cyan
+        (0.46, "#00d880"),  # green (muted)
+        (0.55, "#ffff66"),  # <-- early yellow start
+        (0.63, "#ffd24d"),  # yellow-orange
+        (0.72, "#ff9a33"),  # orange
+        (0.82, "#ff5a2a"),  # orange-red
+        (0.92, "#e41e1e"),  # red
+        (1.00, "#c01010"),  # deep red (avoids neon)
     ]
     return LinearSegmentedColormap.from_list("softjet_yellow", stops, N=256)
 
@@ -303,6 +323,7 @@ def show_heatmap_with_two_colormaps(heatmap, pmin, pmax):
     # to ignore np.nan and only consider valid numbers when computing
     finite = heatmap[np.isfinite(heatmap)]
     vmin, vmax = np.percentile(finite, (pmin, pmax))
+    print(f"vmin: {vmin}, vmax: {vmax}")
 
     fig, axs = plt.subplots(1, 2, figsize=(10, 4))
     im0 = axs[0].imshow(heatmap, cmap=cmap1, vmin=vmin, vmax=vmax)

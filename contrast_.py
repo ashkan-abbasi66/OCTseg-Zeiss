@@ -30,10 +30,12 @@ from compute_rnfl_thickness_map_batch import compute_rnfl_thickness_map
 # PATH_TO_MAP = r"your_rnfl_thickness_map.npy"  # <-- set this to your file
 
 USE_LIMITS = "MAD"          # "MAD" or "IQR"
+# USE_LIMITS = "IQR"          # "MAD" or "IQR"
 MAD_K = 4.0                 # median ± K*MAD (good range: 3–5)
 IQR_K = 1.5                 # Tukey fences Q1 - K*IQR, Q3 + K*IQR
 
 TONE = "gamma"              # "gamma", "log", "asinh", or "none"
+# TONE = "log"              # "gamma", "log", "asinh", or "none"
 GAMMA_CLAMP = (0.7, 1.3)    # gamma clamp if computed automatically
 LOG_ALPHA = 5.0             # strength for log(1 + alpha*x)   (try 3–10)
 ASINH_ALPHA = 5.0           # strength for asinh(alpha*x)     (try 3–10)
@@ -47,21 +49,23 @@ OUT_PATH = "rnfl_contrast_robust.png"
 
 
 # ---------------------- colormap helpers ---------------------- #
-def make_softjet_yellow():
-    """
-    Jet-like colormap with a widened yellow/orange band and softened blues/greens.
-    """
-    stops = [
-        (0.00, "#00103f"),  # deep navy
-        (0.15, "#0047ff"),  # royal blue
-        (0.33, "#00a5ff"),  # cyan-blue (muted)
-        (0.50, "#00e080"),  # green (slightly desaturated)
-        (0.60, "#ffff66"),  # start yellow (lighter)
-        (0.72, "#ffd24d"),  # warm yellow-orange
-        (0.85, "#ff9a33"),  # orange (stretched)
-        (1.00, "#e41e1e"),  # soft red
-    ]
-    return LinearSegmentedColormap.from_list("softjet_yellow", stops, N=256)
+from contrast_rnfl_thickness_map import make_softjet_colormap as make_softjet_yellow
+
+# def make_softjet_yellow():
+#     """
+#     Jet-like colormap with a widened yellow/orange band and softened blues/greens.
+#     """
+#     stops = [
+#         (0.00, "#00103f"),  # deep navy
+#         (0.15, "#0047ff"),  # royal blue
+#         (0.33, "#00a5ff"),  # cyan-blue (muted)
+#         (0.50, "#00e080"),  # green (slightly desaturated)
+#         (0.60, "#ffff66"),  # start yellow (lighter)
+#         (0.72, "#ffd24d"),  # warm yellow-orange
+#         (0.85, "#ff9a33"),  # orange (stretched)
+#         (1.00, "#e41e1e"),  # soft red
+#     ]
+#     return LinearSegmentedColormap.from_list("softjet_yellow", stops, N=256)
 
 
 def get_cmap(name="softjet_yellow"):
