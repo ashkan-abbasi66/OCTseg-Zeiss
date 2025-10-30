@@ -4,4 +4,5 @@ compute_rnfl_thickness_map_batch.py
 logs-temp
 contrast_.py
 contrast_.docx
+*.npy
 
