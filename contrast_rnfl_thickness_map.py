@@ -341,8 +341,14 @@ def show_heatmap_with_two_colormaps(heatmap, pmin, pmax):
 
 if __name__ == '__main__':
 
-    segmented_volume_path = r"./logs/onh-oct-volumes/predict/my-pretrained-model/example-Optic Disc Cube 200x200-OS-cube_z.img.npy"
-    svol = np.load(segmented_volume_path)
+    # Load data
+    # original numpy file (npy) => the output of the segmentation method (`main_nyupitt`)
+    # segmented_volume_path = r"./logs/onh-oct-volumes/predict/my-pretrained-model/example-Optic Disc Cube 200x200-OS-cube_z.img.npy"
+    # svol = np.load(segmented_volume_path)
+
+    # compressed version (NPZ) => for uploading to Github
+    segmented_volume_path = r"./logs/onh-oct-volumes/predict/my-pretrained-model/example-Optic Disc Cube 200x200-OS-cube_z.img.npz"
+    svol = np.load(segmented_volume_path)["svol"]
 
     heatmap = compute_rnfl_thickness_map(svol)
 
