@@ -106,6 +106,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
 
 
 **Example: Contrast enhancement of RNFLT maps** [UPDATED - Feb. 2026]
+
 This example is provided for educational purposes only. Contrast enhancement is performed using a simple percentile-based approach, and the optic disc is manually segmented (not precisely) to illustrate the effect of excluding it.  
 
 - `contrast_rnfl_thickness_map`: An interactive tool for percentile-based contrast adjustment and enhanced colormap visualization of RNFL thickness maps. It also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization.
