@@ -108,13 +108,13 @@ This command performs slice-by-slice segmentation of each OCT volume:
 - `contrast_rnfl_thickness_map`: An interactive tool for percentile-based contrast adjustment and enhanced colormap visualization of RNFL thickness maps. It also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization.
 
 <p align="center">
-<img width="60%" src=./assets/Fig3-enhancedRNFLT.png>
+<img width="80%" src=./assets/Fig3-enhancedRNFLT.png>
 </p>
 
 After manually segmenting the optic disc, the updated visualization is shown below:
 
 <p align="center">
-<img width="60%" src=./assets/Fig3-enhancedRNFLT-woDisc.png>
+<img width="80%" src=./assets/Fig3-enhancedRNFLT-woDisc.png>
 </p>
 
 This example is provided for educational purposes only. The optic disc segmentation shown above is manual and not anatomically precise. 
