@@ -315,7 +315,7 @@ def show_heatmap_with_two_colormaps(heatmap, pmin, pmax):
     cmap1 = "gray"
     # cmap2 = make_modified_turbo_colormap()
     cmap2 = make_softjet_colormap()
-    cmap2.set_bad("#c9c9c9")
+    cmap2.set_bad("black")
 
     # cmap2 = "jet"
     # cmap2 = "nipy_spectral"

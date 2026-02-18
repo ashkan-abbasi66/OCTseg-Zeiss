@@ -104,6 +104,21 @@ This command performs slice-by-slice segmentation of each OCT volume:
 - **Optic disc exclusio**n: RNFLT may be better visualized if optic disc is excluded. For simplicity, this script does not consider optic disc exclusion.
 - **Colormap choice**: Here, a grayscale colormap is used for visualization. Commercial devices usually employ a different colormap (e.g., `jet` like colormap) for better visual contrast.
 
+**Contrast enhancement of RNFLT maps** [UPDATED - Feb. 2026]
+- `contrast_rnfl_thickness_map`: An interactive tool for percentile-based contrast adjustment and enhanced colormap visualization of RNFL thickness maps. It also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization.
+
+<p align="center">
+<img width="60%" src=./assets/Fig3-enhancedRNFLT.png>
+</p>
+
+After manually segmenting the optic disc, the updated visualization is shown below:
+
+<p align="center">
+<img width="60%" src=./assets/Fig3-enhancedRNFLT-woDisc.png>
+</p>
+
+This example is provided for educational purposes only. The optic disc segmentation shown above is manual and not anatomically precise. 
+
 
 # Citation and Acknowledgement
 
