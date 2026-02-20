@@ -103,19 +103,19 @@ This command performs slice-by-slice segmentation of each OCT volume:
   - **Colormap choice**: Commercial OCT devices typically use custom colormaps to enhance visual contrast.
 
 
-**Example: Contrast enhancement of RNFLT maps** [UPDATED - Feb. 2026]
+**Example: The effect of Contrast enhancement on RNFLT maps** [UPDATED - Feb. 2026]
 
 - `contrast_rnfl_thickness_map`: An interactive tool for _percentile-based contrast enhancement_ of RNFL thickness maps. This tool uses a _custom color map_ (not equivalent to Commercial devices), and it also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization.
 
-<p align="center">
-<img width="80%" src=./assets/Fig3-enhancedRNFLT.png>
-</p>
+  <p align="center">
+  <img width="80%" src=./assets/Fig3-enhancedRNFLT.png>
+  </p>
 
-After manually segmenting the optic disc, the updated visualization is shown below:
+  After manually segmenting the optic disc, the updated visualization is shown below:
 
-<p align="center">
-<img width="80%" src=./assets/Fig3-enhancedRNFLT-woDisc.png>
-</p>
+  <p align="center">
+  <img width="80%" src=./assets/Fig3-enhancedRNFLT-woDisc.png>
+  </p>
 
 
 # Citation and Acknowledgement
