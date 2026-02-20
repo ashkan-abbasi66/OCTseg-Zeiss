@@ -51,35 +51,19 @@ OUT_PATH = "rnfl_contrast_robust.png"
 # ---------------------- colormap helpers ---------------------- #
 from contrast_rnfl_thickness_map import make_softjet_colormap as make_softjet_yellow
 
-# def make_softjet_yellow():
-#     """
-#     Jet-like colormap with a widened yellow/orange band and softened blues/greens.
-#     """
-#     stops = [
-#         (0.00, "#00103f"),  # deep navy
-#         (0.15, "#0047ff"),  # royal blue
-#         (0.33, "#00a5ff"),  # cyan-blue (muted)
-#         (0.50, "#00e080"),  # green (slightly desaturated)
-#         (0.60, "#ffff66"),  # start yellow (lighter)
-#         (0.72, "#ffd24d"),  # warm yellow-orange
-#         (0.85, "#ff9a33"),  # orange (stretched)
-#         (1.00, "#e41e1e"),  # soft red
-#     ]
-#     return LinearSegmentedColormap.from_list("softjet_yellow", stops, N=256)
-
 
 def get_cmap(name="softjet_yellow"):
     if name == "softjet_yellow":
         cm = make_softjet_yellow()
-        cm.set_bad("#c9c9c9")  # NaNs appear light gray
+        cm.set_bad("black")
         return cm
     try:
         cm = plt.get_cmap(name)
-        cm.set_bad("#c9c9c9")
+        cm.set_bad("black")
         return cm
     except Exception:
         cm = plt.get_cmap("turbo")
-        cm.set_bad("#c9c9c9")
+        cm.set_bad("black")
         return cm
 
 
