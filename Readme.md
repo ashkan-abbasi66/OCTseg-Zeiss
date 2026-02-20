@@ -107,7 +107,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
 
 - `contrast_rnfl_thickness_map`: An interactive tool for contrast enhancement of RNFL thickness maps. This tool uses a _custom color map_ (not equivalent to Commercial devices), and it also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization. Two methods for contrast enhancement have been applied.
 
-  Method 1: Percentile based contrast enhancement
+  **Method 1: Percentile based contrast enhancement**
   <p align="center">
   <img width="80%" src=./assets/Fig3-percentile-enhanced.png>
   </p>
@@ -116,7 +116,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
   <img width="80%" src=./assets/Fig4-percentile-enhanced-after-segmentation.png>
   </p>
   
-  Method 2: Robust contrast enhancement
+  **Method 2: MAD/IQR-based Contrast Mapping**
   <p align="center">
   <img width="80%" src=./assets/Fig5-robust-enhanced.png>
   </p>
@@ -126,7 +126,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
   </p>
 
 
-- 
+
 
 # Citation and Acknowledgement
 
