@@ -98,18 +98,14 @@ This command performs slice-by-slice segmentation of each OCT volume:
 - The resulting segmentation volume is optionally saved as a `.npy` file.
 - A corresponding RNFL thickness map is computed and saved as a `.png` file.
 - All outputs are stored in the directory specified by `--log_path`.
-
-
-**Notes**: 
-- **Optic disc exclusio**n: RNFL thickness maps may be better visualized when contrast enhancement is applied and the optic disc is excluded. For simplicity, this script does not automatically perform these post-processing steps.
-- **Colormap choice**: A grayscale colormap is used here for visualization. Commercial OCT devices typically employ alternative colormaps (e.g., jet-like colormaps) to enhance visual contrast.
+- **Notes**: 
+  - **Low contrast maps**: RNFL thickness maps appear dark when raw segmentation values are min-max normalized, because the intensity distribution is skewed toward low values and the optic disc/segmentation errors act as outliers. Excluding the disc and applying contrast enhancement improves visualization.
+  - **Colormap choice**: Commercial OCT devices typically use custom colormaps to enhance visual contrast.
 
 
 **Example: Contrast enhancement of RNFLT maps** [UPDATED - Feb. 2026]
 
-This example is provided for educational purposes only. Contrast enhancement is performed using a simple percentile-based approach, and the optic disc is manually segmented (not precisely) to illustrate the effect of excluding it.  
-
-- `contrast_rnfl_thickness_map`: An interactive tool for percentile-based contrast enhancement of RNFL thickness maps. It uses a custom color map, and it also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization.
+- `contrast_rnfl_thickness_map`: An interactive tool for _percentile-based contrast enhancement_ of RNFL thickness maps. This tool uses a _custom color map_ (not equivalent to Commercial devices), and it also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization.
 
 <p align="center">
 <img width="80%" src=./assets/Fig3-enhancedRNFLT.png>
