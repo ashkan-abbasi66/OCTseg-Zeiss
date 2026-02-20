@@ -339,138 +339,6 @@ def show_heatmap_with_two_colormaps(heatmap, pmin, pmax):
     plt.tight_layout()
     plt.show()
 
-
-def robust_limits_mad(x, k=4.0):
-    x = x[np.isfinite(x)]
-    if x.size == 0:
-        raise ValueError("No finite values for MAD limits.")
-    med = np.median(x)
-    mad = np.median(np.abs(x - med))
-    vmin = med - k * mad
-    vmax = med + k * mad
-    return max(vmin, x.min()), min(vmax, x.max())
-
-
-def robust_limits_iqr(x, k=1.5):
-    x = x[np.isfinite(x)]
-    if x.size == 0:
-        raise ValueError("No finite values for IQR limits.")
-    q1, q3 = np.percentile(x, [25, 75])
-    iqr = q3 - q1
-    vmin = q1 - k * iqr
-    vmax = q3 + k * iqr
-    return max(vmin, x.min()), min(vmax, x.max())
-
-
-def normalize_to_unit(x, vmin, vmax):
-    y = x.astype(float).copy()
-    mask_nan = ~np.isfinite(y)
-    y = np.clip(y, vmin, vmax)
-    if vmax == vmin:
-        vmax = vmin + 1e-12
-    y = (y - vmin) / (vmax - vmin)
-    y[mask_nan] = np.nan
-    return y
-
-
-def auto_gamma_from_median(x01, clamp=(0.7, 1.3)):
-    finite = x01[np.isfinite(x01)]
-    if finite.size == 0:
-        return 1.0
-    med = np.median(finite)
-    eps = 1e-6
-    med = np.clip(med, eps, 1 - eps)
-    gamma = np.log(0.5) / np.log(med)
-    return float(np.clip(gamma, clamp[0], clamp[1]))
-
-
-def apply_tone_curve(x01, mode="gamma", gamma=None, log_alpha=5.0, asinh_alpha=5.0):
-    y = x01.copy()
-    mask_nan = ~np.isfinite(y)
-    y = np.clip(y, 0.0, 1.0)
-    if mode == "none":
-        pass
-    elif mode == "gamma":
-        if gamma is None:
-            gamma = auto_gamma_from_median(y)
-        y = y ** gamma
-    elif mode == "log":
-        a = float(log_alpha)
-        y = np.log1p(a * y) / np.log1p(a)
-    elif mode == "asinh":
-        a = float(asinh_alpha)
-        y = np.arcsinh(a * y) / np.arcsinh(a)
-    else:
-        raise ValueError(f"Unknown tone mode: {mode}")
-    y[mask_nan] = np.nan
-    return y
-
-
-def robust_global_contrast_map(
-        heatmap,
-        use_limits="MAD",
-        mad_k=4.0,
-        iqr_k=1.5,
-        tone="gamma",
-        gamma_clamp=(0.7, 1.3),
-        log_alpha=5.0,
-        asinh_alpha=5.0):
-    if use_limits.upper() == "MAD":
-        vmin, vmax = robust_limits_mad(heatmap, k=mad_k)
-        limits_label = f"MAD (k={mad_k:g})"
-    elif use_limits.upper() == "IQR":
-        vmin, vmax = robust_limits_iqr(heatmap, k=iqr_k)
-        limits_label = f"IQR (k={iqr_k:g})"
-    else:
-        raise ValueError("use_limits must be 'MAD' or 'IQR'.")
-
-    x01 = normalize_to_unit(heatmap, vmin, vmax)
-
-    if tone.lower() == "gamma":
-        gamma = auto_gamma_from_median(x01, clamp=gamma_clamp)
-        x_tone = apply_tone_curve(x01, mode="gamma", gamma=gamma)
-        tone_label = f"gamma (auto={gamma:.2f})"
-    elif tone.lower() == "log":
-        x_tone = apply_tone_curve(x01, mode="log", log_alpha=log_alpha)
-        tone_label = f"log (α={log_alpha:g})"
-    elif tone.lower() == "asinh":
-        x_tone = apply_tone_curve(x01, mode="asinh", asinh_alpha=asinh_alpha)
-        tone_label = f"asinh (α={asinh_alpha:g})"
-    elif tone.lower() == "none":
-        x_tone = x01
-        tone_label = "none"
-    else:
-        raise ValueError("tone must be 'gamma', 'log', 'asinh', or 'none'.")
-
-    return x_tone, limits_label, tone_label, vmin, vmax
-
-
-def show_robust_contrast_result(heatmap, use_limits="MAD", tone="gamma"):
-    cmap1 = "gray"
-    cmap2 = make_softjet_colormap()
-    cmap2.set_bad("black")
-
-    x_tone, limits_label, tone_label, vmin, vmax = robust_global_contrast_map(
-        heatmap,
-        use_limits=use_limits,
-        tone=tone,
-    )
-
-    fig, axs = plt.subplots(1, 2, figsize=(10, 4))
-    im0 = axs[0].imshow(x_tone, cmap=cmap1, vmin=0.0, vmax=1.0)
-    axs[0].set_title(f"Original (robust: {limits_label})")
-    axs[0].axis("off")
-    fig.colorbar(im0, ax=axs[0], fraction=0.046, pad=0.03)
-
-    im1 = axs[1].imshow(x_tone, cmap=cmap2, vmin=0.0, vmax=1.0)
-    axs[1].set_title(f"Masked (tone: {tone_label})")
-    axs[1].axis("off")
-    fig.colorbar(im1, ax=axs[1], fraction=0.046, pad=0.03)
-
-    fig.suptitle(f"Robust contrast [vmin, vmax] = [{vmin:.3g}, {vmax:.3g}]")
-    plt.tight_layout()
-    plt.show()
-
 if __name__ == '__main__':
 
     # Load data
@@ -499,10 +367,9 @@ if __name__ == '__main__':
     )
 
     show_heatmap_with_two_colormaps(heatmap, pmin, pmax)
-    show_robust_contrast_result(heatmap, use_limits="MAD", tone="gamma")
 
     mask = define_mask_on(heatmap)
     heatmap_masked = apply_mask(heatmap, mask, fill=np.nan, invert=False)
 
     show_heatmap_with_two_colormaps(heatmap_masked, pmin, pmax)
-    show_robust_contrast_result(heatmap_masked, use_limits="MAD", tone="gamma")
+
