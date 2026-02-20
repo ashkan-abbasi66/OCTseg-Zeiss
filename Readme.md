@@ -127,7 +127,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
 
 - **Final note**: 
   - The contrast-enhanced RNFLT visualizations shown here are intended solely for exploration and research. The resulting images should not be interpreted as clinically calibrated thickness maps, nor do they match the proprietary contrast pipelines used in commercial OCT devices.
-  - The example above also illustrate an important point: RNFL thickness maps can appear markedly different depending on the chosen contrast-enhancement method, even when the underlying imaging and/or segmentation is identical. This variability stems from differences in intensity normalization, outlier handling (e.g., optic-disc removal), and colormap choices, independent of true anatomical or segmentation changes.
+  - The example above also illustrate an important point: RNFL thickness maps can appear markedly different depending on the chosen contrast-enhancement method, even when the underlying imaging and/or segmentation is identical.
 
 
 # Citation and Acknowledgement
