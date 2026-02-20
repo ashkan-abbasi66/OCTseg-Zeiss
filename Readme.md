@@ -111,7 +111,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
   <p align="center">
   <img width="80%" src=./assets/Fig3-percentile-enhanced.png>
   </p>
-  Method 1 after excluding the optic disc:
+  After excluding the optic disc:
   <p align="center">
   <img width="80%" src=./assets/Fig4-percentile-enhanced-after-segmentation.png>
   </p>
@@ -120,7 +120,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
   <p align="center">
   <img width="80%" src=./assets/Fig5-robust-enhanced.png>
   </p>
-  Method 1 after excluding the optic disc:
+  After excluding the optic disc:
   <p align="center">
   <img width="80%" src=./assets/Fig6-robust-enhanced-after-segmentation.png>
   </p>
