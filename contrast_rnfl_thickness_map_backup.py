@@ -12,6 +12,10 @@ from matplotlib.colors import PowerNorm
 norm = PowerNorm(gamma=0.85)  # 0.7–0.9 makes warm colors appear sooner
 plt.imshow(img, cmap=cmap, norm=norm, vmin=vmin, vmax=vmax)
 
+
+Intended for exploration, visualization, and refinement of RNFL thickness maps
+for research use.
+
 """
 from compute_rnfl_thickness_map_batch import compute_rnfl_thickness_map
 import numpy as np

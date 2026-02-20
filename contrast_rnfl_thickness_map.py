@@ -1,16 +1,21 @@
 """
-This script enhances visualization of RNFL thickness maps.
-Thickness maps generated from raw segmented values often have low contrast
-because the minimum and maximum values (mapped to 0 and 255) correspond to
-the background and optic disc regions rather than the nerve fiber layer of interest.
 
-The provided functions allow users to adjust contrast and color to produce a high-contrast, visually enhanced RNFL thickness map.
+Interactive RNFL thickness map visualization tool with two contrast enhancement methods.
+
+This script computes an RNFL thickness map, lets the user choose percentile-based
+contrast interactively, and also shows a robust global contrast version (MAD/IQR +
+tone curve). The optic-disc region can be manually selected and masked to compare
+both methods before and after disc removal.
+
+Intended for exploration, visualization, and refinement of RNFL thickness maps
+for research use.
 
 
-There is also a way to push more pixels into yellow/red:
-from matplotlib.colors import PowerNorm
-norm = PowerNorm(gamma=0.85)  # 0.7–0.9 makes warm colors appear sooner
-plt.imshow(img, cmap=cmap, norm=norm, vmin=vmin, vmax=vmax)
+Extra note:
+    There is also a way to push more pixels into yellow/red:
+    from matplotlib.colors import PowerNorm
+    norm = PowerNorm(gamma=0.85)  # 0.7–0.9 makes warm colors appear sooner
+    plt.imshow(img, cmap=cmap, norm=norm, vmin=vmin, vmax=vmax)
 
 """
 from compute_rnfl_thickness_map_batch import compute_rnfl_thickness_map
@@ -33,39 +38,19 @@ except Exception:
 from matplotlib.colors import LinearSegmentedColormap
 
 def make_modified_turbo_colormap():
+    """Return a turbo colormap with black low-end and red high-end anchors."""
     from matplotlib.colors import LinearSegmentedColormap
     turbo = plt.cm.get_cmap('turbo', 256)
-    turbo_colors = turbo(np.linspace(0, 1, 256)) # Convert the colormap to an array of RGBA values
-    # Change the lowest and the highest values
-    turbo_colors[0] = [0, 0, 0, 1]   # RGBA for black
-    turbo_colors[-1] = [1, 0, 0, 1]  # RGBA for red
+    turbo_colors = turbo(np.linspace(0, 1, 256))
+    turbo_colors[0] = [0, 0, 0, 1]
+    turbo_colors[-1] = [1, 0, 0, 1]
     modified_turbo = LinearSegmentedColormap.from_list('modified_turbo', turbo_colors)
     return modified_turbo
 
+
 def make_softjet_colormap():
-
-    # colors_list = [
-    #     (0.0, "#0010ff"),  # dark blue
-    #     (0.3, "#00b0ff"),  # cyan-blue
-    #     (0.5, "#00ff80"),  # greenish
-    #     (0.7, "#ffff00"),  # yellow
-    #     (0.9, "#ff8000"),  # orange
-    #     (1.0, "#ff0000")  # red
-    # ]
-    # softjet = LinearSegmentedColormap.from_list("softjet", colors_list, N=256)
-    # return softjet
-
-    # Control points: (position, hex color). We widen 0.60–0.85 for yellow/orange.
-    # stops = [
-    #     (0.00, "#00103f"),  # deep navy
-    #     (0.15, "#0047ff"),  # royal blue
-    #     (0.33, "#00a5ff"),  # cyan-blue (muted)
-    #     (0.50, "#00e080"),  # green (slightly desaturated)
-    #     (0.60, "#ffff66"),  # start yellow (lighter)
-    #     (0.72, "#ffd24d"),  # warm yellow-orange
-    #     (0.85, "#ff9a33"),  # orange (stretched)
-    #     (1.00, "#e41e1e"),  # soft red (not neon)
-    # ]
+    """Return the custom RNFL colormap used for enhanced heatmap display."""
+    # Control points: (position, color).
     stops = [
         (0.00, "#00103f"),  # deep navy
         (0.10, "#003aa7"),  # dark blue
@@ -311,6 +296,7 @@ def define_mask_on(original_map):
     return _ellipse_to_mask(h, w, state["center"], state["width"], state["height"], state["angle"])
 
 def show_heatmap_with_two_colormaps(heatmap, pmin, pmax):
+    """Display the input map with grayscale and custom color views using percentile limits."""
 
     cmap1 = "gray"
     # cmap2 = make_modified_turbo_colormap()
@@ -341,6 +327,7 @@ def show_heatmap_with_two_colormaps(heatmap, pmin, pmax):
 
 
 def robust_limits_mad(x, k=4.0):
+    """Compute robust display limits from median ± k*MAD."""
     x = x[np.isfinite(x)]
     if x.size == 0:
         raise ValueError("No finite values for MAD limits.")
@@ -352,6 +339,7 @@ def robust_limits_mad(x, k=4.0):
 
 
 def robust_limits_iqr(x, k=1.5):
+    """Compute robust display limits from Tukey IQR fences."""
     x = x[np.isfinite(x)]
     if x.size == 0:
         raise ValueError("No finite values for IQR limits.")
@@ -363,6 +351,7 @@ def robust_limits_iqr(x, k=1.5):
 
 
 def normalize_to_unit(x, vmin, vmax):
+    """Clip to [vmin, vmax] and normalize values to [0, 1]."""
     y = x.astype(float).copy()
     mask_nan = ~np.isfinite(y)
     y = np.clip(y, vmin, vmax)
@@ -374,6 +363,7 @@ def normalize_to_unit(x, vmin, vmax):
 
 
 def auto_gamma_from_median(x01, clamp=(0.7, 1.3)):
+    """Estimate a stable gamma so the median maps near mid-intensity."""
     finite = x01[np.isfinite(x01)]
     if finite.size == 0:
         return 1.0
@@ -385,6 +375,7 @@ def auto_gamma_from_median(x01, clamp=(0.7, 1.3)):
 
 
 def apply_tone_curve(x01, mode="gamma", gamma=None, log_alpha=5.0, asinh_alpha=5.0):
+    """Apply a monotonic global tone curve to normalized data."""
     y = x01.copy()
     mask_nan = ~np.isfinite(y)
     y = np.clip(y, 0.0, 1.0)
@@ -415,6 +406,7 @@ def robust_global_contrast_map(
         gamma_clamp=(0.7, 1.3),
         log_alpha=5.0,
         asinh_alpha=5.0):
+    """Run robust limits + normalization + tone curve and return display-ready data."""
     if use_limits.upper() == "MAD":
         vmin, vmax = robust_limits_mad(heatmap, k=mad_k)
         limits_label = f"MAD (k={mad_k:g})"
@@ -446,6 +438,7 @@ def robust_global_contrast_map(
 
 
 def show_robust_contrast_result(heatmap, use_limits="MAD", tone="gamma"):
+    """Display robustly enhanced output in grayscale and custom color panels."""
     cmap1 = "gray"
     cmap2 = make_softjet_colormap()
     cmap2.set_bad("black")
@@ -473,7 +466,8 @@ def show_robust_contrast_result(heatmap, use_limits="MAD", tone="gamma"):
 
 if __name__ == '__main__':
 
-    # Load data
+    # Load precomputed segmentation output and build RNFL thickness map.
+
     # original numpy file (npy) => the output of the segmentation method (`main_nyupitt`)
     # segmented_volume_path = r"./logs/onh-oct-volumes/predict/my-pretrained-model/example-Optic Disc Cube 200x200-OS-cube_z.img.npy"
     # svol = np.load(segmented_volume_path)
@@ -490,19 +484,30 @@ if __name__ == '__main__':
     plt.axis("off")
     plt.show()
 
-    # Interactive percentile slider for the original map
+    # Percentile based contrast enhancement
     pmin, pmax, vmin, vmax = show_with_percentile_slider(
         heatmap,
         title="Original map — choose percentile stretch",
         cmap="gray",
         init_percentiles=(1.0, 99.0)
     )
-
     show_heatmap_with_two_colormaps(heatmap, pmin, pmax)
+
+    # Robust contrast enhancement
     show_robust_contrast_result(heatmap, use_limits="MAD", tone="gamma")
 
+    # Manual segmentation
     mask = define_mask_on(heatmap)
     heatmap_masked = apply_mask(heatmap, mask, fill=np.nan, invert=False)
 
+    # Percentile based contrast enhancement
+    pmin, pmax, _, _ = show_with_percentile_slider(
+        heatmap_masked,
+        title="Masked map — choose percentile stretch",
+        cmap="gray",
+        init_percentiles=(1.0, 99.0)
+    )
     show_heatmap_with_two_colormaps(heatmap_masked, pmin, pmax)
+
+    # Robust contrast enhancement
     show_robust_contrast_result(heatmap_masked, use_limits="MAD", tone="gamma")

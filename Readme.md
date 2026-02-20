@@ -105,17 +105,26 @@ This command performs slice-by-slice segmentation of each OCT volume:
 
 **Example: The effect of Contrast enhancement on RNFLT maps** [UPDATED - Feb. 2026]
 
-- `contrast_rnfl_thickness_map`: An interactive tool for _percentile-based contrast enhancement_ of RNFL thickness maps. This tool uses a _custom color map_ (not equivalent to Commercial devices), and it also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization.
+- `contrast_rnfl_thickness_map`: An interactive tool for contrast enhancement of RNFL thickness maps. This tool uses a _custom color map_ (not equivalent to Commercial devices), and it also supports manual optic disc segmentation to demonstrate how disc removal affects the final visualization. Two methods for contrast enhancement have been applied.
 
+  Method 1: Percentile based contrast enhancement
   <p align="center">
-  <img width="80%" src=./assets/Fig3-enhancedRNFLT.png>
+  <img width="80%" src=./assets/Fig3-percentile-enhanced.png>
+  </p>
+  Method 1 after excluding the optic disc:
+  <p align="center">
+  <img width="80%" src=./assets/Fig4-percentile-enhanced-after-segmentation.png>
+  </p>
+  
+  Method 2: Robust contrast enhancement
+  <p align="center">
+  <img width="80%" src=./assets/Fig5-robust-enhanced.png.png>
+  </p>
+  Method 1 after excluding the optic disc:
+  <p align="center">
+  <img width="80%" src=./assets/Fig6-robust-enhanced-after-segmentation.png>
   </p>
 
-  After manually segmenting the optic disc, the updated visualization is shown below:
-
-  <p align="center">
-  <img width="80%" src=./assets/Fig3-enhancedRNFLT-woDisc.png>
-  </p>
 
 - 
 
