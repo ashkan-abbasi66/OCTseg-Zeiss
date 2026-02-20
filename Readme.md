@@ -88,7 +88,7 @@ The segmentation model can be applied to compute retinal nerve fiber layer thick
 - A dataset directory containing `.img` OCT volume files. An example is saved in [./my-example-datasets/onh-oct-volumes](`./my-example-datasets/onh-oct-volumes`) folder.
 
 
-**RNFLT computation command:**:
+**RNFLT computation command:**
 
 ```commandline
 python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-example-datasets/onh-oct-volumes --log_path ./logs/
