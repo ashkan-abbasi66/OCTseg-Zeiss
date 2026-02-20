@@ -118,7 +118,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
   
   Method 2: Robust contrast enhancement
   <p align="center">
-  <img width="80%" src=./assets/Fig5-robust-enhanced.png.png>
+  <img width="80%" src=./assets/Fig5-robust-enhanced.png>
   </p>
   Method 1 after excluding the optic disc:
   <p align="center">
