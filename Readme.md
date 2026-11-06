@@ -80,6 +80,10 @@ Since the exact dataset from Reference 1 was not available, a direct comparison 
 <img width="33%" src=./assets/Fig2.png>
 </p>
 
+> [!WARNING]
+> The maps include the optic disc region (where there is little or no RNFL) and are based on the raw segmentation, so segmentation errors appear directly in the map. 
+> The color scale is a research visualization choice; the maps are not clinically calibrated and do not reproduce the proprietary thickness maps or normative color coding of commercial OCT devices.
+
 The segmentation model can be applied to compute retinal nerve fiber layer thickness maps (RNFLTs) from a folder of OCT volumes.
 
 
@@ -103,11 +107,7 @@ This command performs slice-by-slice segmentation of each OCT volume:
 - For every A-scan, the number of pixels segmented as RNFL is multiplied by the axial pixel size: `thickness = N_RNFL_pixels × (2 mm / 1024)` ≈ `N_RNFL_pixels × 1.95 µm`.
 - The map is therefore in physical units (µm) and is displayed over the 6 × 6 mm field of view (200 × 200 samples, 30 µm apart).
 - The pixel spacing is assumed from the Cirrus HD-OCT Optic Disc Cube 200x200 geometry (6 × 6 × 2 mm); it is not read from the file, so other scan protocols require changing the constants at the top of `compute_rnfl_thickness_map_batch.py`.
-- **Color coding**: the `jet` colormap is used with a fixed scale from 0 to `VMAX_UM` µm (default 300, set at the top of `compute_rnfl_thickness_map_batch.py`). Because the scale is fixed rather than min-max normalized per scan, colors are comparable across scans. No contrast enhancement or optic-disc removal is applied.
-
-**Notes**:
-- The maps include the optic disc region (where there is little or no RNFL) and are based on the raw segmentation, so segmentation errors appear directly in the map.
-- The color scale is a research visualization choice; the maps are not clinically calibrated and do not reproduce the proprietary thickness maps or normative color coding of commercial OCT devices.
+- **Color coding**: the `jet` colormap is used with a fixed scale from 0 to `VMAX_UM` µm (default 300, set at the top of `compute_rnfl_thickness_map_batch.py`). Because the scale is fixed rather than min-max normalized per scan, colors are comparable across scans.
 
 
 # Citation and Acknowledgement
