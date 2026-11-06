@@ -1,7 +1,7 @@
 
 # OCTseg-Zeiss
 
-**This is a U-Net–based method for retinal layer segmentation from OCT B-scans, including code for training, testing, a pretrained model, and RNFL thickness map computation.**
+**This is a U-Net–based method for retinal layer segmentation from optic nerve head (ONH) OCT B-scans, including code for training, testing, a pretrained model, and RNFL thickness map computation.**
 
 - The OCT b-scan images are assumed to be acquired with a **Cirrus HD-OCT (Zeiss)**. 
   - Each OCT volume (Optic Disc Cube 200x200) covers a 6 × 6 × 2 mm³ area of the retina and is stored as 200 B-scans, each of 200 A-scans × 1024 axial pixels (array axes: B-scan index × depth × lateral position). The pixel spacing is therefore 30 µm laterally, 30 µm between B-scans, and 2 mm / 1024 ≈ 1.95 µm axially. Selected B-scans were then extracted to form the dataset.
