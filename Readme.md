@@ -106,6 +106,7 @@ This command performs slice-by-slice segmentation of each OCT volume and compute
 - The map is therefore in physical units (µm) and is displayed over the 6 × 6 mm field of view (200 × 200 samples, 30 µm apart).
 - The pixel spacing is assumed from the Cirrus HD-OCT Optic Disc Cube 200x200 geometry (6 × 6 × 2 mm); it is not read from the file, so other scan protocols require changing the constants at the top of `compute_rnfl_thickness_map_batch.py`.
 - **Color coding**: the `jet` colormap is used with a fixed scale from 0 to `VMAX_UM` µm (default 300, set at the top of `compute_rnfl_thickness_map_batch.py`). Because the scale is fixed rather than min-max normalized per scan, colors are comparable across scans.
+- **Clinical relevance**: As noted above, no comparison has been performed between this way of computing thickness maps and the way Cirrus computes them, so the maps should not be considered clinically relevant. At a minimum, this would require a Pearson correlation and Bland-Altman analysis of the mean thickness (or the circular-scan values) against what Cirrus reports for the same scans.
 
 
 # Citation and Acknowledgement
