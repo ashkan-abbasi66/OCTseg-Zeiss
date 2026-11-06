@@ -4,19 +4,35 @@ Module for computing RNFL thickness maps from OCT volumes using a pretrained seg
 This script processes OCT volume files (.img) to:
 1. Perform retinal layer segmentation using a pretrained U-Net model
 2. Generate RNFL thickness maps from the segmentation results
-3. Save both segmentation volumes (.npy) and thickness maps (.png)
+3. Save the segmentation volume (.npy), the RNFL thickness map in micrometers (.npy),
+   and a color-coded thickness map with a colorbar (.png)
+
+RNFL thickness is computed in physical units: the number of RNFL pixels in each A-scan
+multiplied by the axial pixel size. As in OCT-ONH, the pixel spacing is assumed from the
+Cirrus HD-OCT "Optic Disc Cube 200x200" geometry (6 x 6 x 2 mm) and is not read from the file.
 
 The script expects:
 - A pretrained model checkpoint path
 - Input directory containing .img OCT volume files
 - Output directory path for saving results
 
-Each OCT volume should be 200x1024x200 (horizontal x depth x vertical)
+Each OCT volume should be 200x1024x200 (B-scan index x depth x lateral position)
 """
 import matplotlib.pyplot as plt
 import numpy as np
 
 N_CLASSES = 9  # including background
+
+# Zeiss Cirrus Optic Disc Cube 200x200 geometry (same assumption as OCT-ONH)
+N_BSCANS = 200            # number of B-scans (slow axis)
+N_DEPTH = 1024            # pixels per A-scan (axial)
+N_WIDTH = 200             # A-scans per B-scan (lateral)
+FOV_X_MM = 6.0            # lateral extent of a B-scan
+FOV_Y_MM = 6.0            # extent along the B-scan stacking direction
+DEPTH_MM = 2.0            # axial extent
+AXIAL_MM = DEPTH_MM / N_DEPTH   # ~1.953 um per pixel
+BACKGROUND_LABEL = 240    # label given to the background class in the saved volume
+VMAX_UM = 300.0           # upper limit of the fixed color scale (um); vmin is 0
 
 import os
 import os.path as osp
@@ -43,17 +59,19 @@ def seg_volume(args, test_loader, to_save_path):
 
     Returns:
         numpy.ndarray: Segmented volume of shape (200, 1024, 200) with class labels
+            (RNFL = 0, background = 240)
     """
     # load the model
     print('Loading test model ...')
     net = OSMGUNet()
     model = torch.nn.DataParallel(net).to(args.device)
-    checkpoint = torch.load(args.model_path, map_location=args.device)
+    checkpoint = torch.load(args.model_path, map_location=args.device, weights_only=False)
     model.load_state_dict(checkpoint['state_dict'])
     print('Model loaded!')
     cudnn.benchmark = True
 
-    output_volume = np.zeros((200, 1024, 200))
+    # initialised with the background label so that unprocessed slices are not counted as RNFL (label 0)
+    output_volume = np.full((N_BSCANS, N_DEPTH, N_WIDTH), BACKGROUND_LABEL, dtype=np.uint8)
 
     phase = test_loader.dataset.phase
     if phase == "predict":
@@ -97,22 +115,50 @@ def seg_volume(args, test_loader, to_save_path):
 
         return output_volume
 
-def compute_rnfl_thickness_map(svol):
+def compute_rnfl_thickness_map(svol, axial_mm=AXIAL_MM, normalize=False):
     """
-    sval: segmented volume
-    """
-    # Count class 0 per A-scan
-    heatmap = np.zeros((200, 200))
-    for i in range(200):  # 200 B-scans (H=1024, W=200 assumed)
-        bscan = svol[i, :, :]
-        slice_counts = np.count_nonzero(bscan == 0, axis=0)
-        heatmap[i, :] = slice_counts
+    Compute the RNFL thickness map from a segmented volume.
 
-    # Normalize to [0,1]
-    maxv = heatmap.reshape(-1).max()
-    if maxv > 0:
-        heatmap = heatmap / maxv
+    Thickness at each (B-scan, A-scan) position = number of RNFL pixels (label 0)
+    along the depth axis x axial pixel size (same idea as OCT-ONH).
+
+    Args:
+        svol: segmented volume (B-scans x depth x width); RNFL pixels have label 0
+        axial_mm: axial pixel size in mm (default: 2 mm / 1024 for the Cirrus Cube)
+        normalize: if True, return the map scaled to [0, 1] (relative values only,
+            no physical meaning). Default False.
+
+    Returns:
+        numpy.ndarray (B-scans x width): RNFL thickness in micrometers (um).
+    """
+    thickness_mm = np.count_nonzero(svol == 0, axis=1) * axial_mm
+    heatmap = thickness_mm * 1000.0  # mm -> um
+
+    if normalize:
+        maxv = heatmap.max()
+        if maxv > 0:
+            heatmap = heatmap / maxv
     return heatmap
+
+
+def save_thickness_figure(heatmap_um, save_path, vmax=VMAX_UM,
+                          fov_x_mm=FOV_X_MM, fov_y_mm=FOV_Y_MM):
+    """
+    Save a color-coded RNFL thickness map (jet, fixed scale 0..vmax um) with
+    physical axes (mm) and a colorbar (um).
+    """
+    fig, ax = plt.subplots(figsize=(5, 4.5))
+    im = ax.imshow(heatmap_um, cmap='jet', vmin=0, vmax=vmax,
+                   extent=[0, fov_x_mm, fov_y_mm, 0], aspect='equal')
+    ax.set_xlabel("x (mm)")
+    ax.set_ylabel("y (mm)")
+    ax.set_title("RNFL thickness map")
+    cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    cbar.set_label("RNFL thickness (\u00b5m)")
+    fig.tight_layout()
+    fig.savefig(save_path, dpi=200)
+    plt.close(fig)
+
 
 if __name__ == '__main__':
 
@@ -181,17 +227,9 @@ if __name__ == '__main__':
             # output = np.load(
             #     r"e:/logs/Normal-ONH-000420-2010-04-22-10-53-54-OD.npy\predict\osmgunet_0.001_t1\Normal-ONH-000420-2010-04-22-10-53-54-OD.npy")
 
-            # # Generate RNFL thickness map by counting RNFL pixels (class 0) in each A-scan
-            # heatmap = np.zeros((200, 200))
-            # for i in range(200):  # We have 200 slices (b-scans), each with size of 1024x200
-            #     # Count pixels classified as 0 (RNFL) in the current slice
-            #     bscan = output[i, :, :]
-            #     slice_counts = np.count_nonzero(bscan == 0, axis=0)
-            #     heatmap[i, :] = slice_counts
-            # # Normalize thickness values to [0,1] range
-            # heatmap /= heatmap.reshape(-1).max()
-
+            # RNFL thickness map in micrometers (pixel count x axial pixel size)
             heatmap = compute_rnfl_thickness_map(output)
 
-            plt.imsave(os.path.join(test_result_path, file.split('.')[0] + '-rnfl-thickness.png'),
-                       heatmap, cmap='gray')
+            base = os.path.join(test_result_path, file.split('.')[0] + '-rnfl-thickness')
+            np.save(base + '.npy', heatmap)           # thickness values in um
+            save_thickness_figure(heatmap, base + '.png')

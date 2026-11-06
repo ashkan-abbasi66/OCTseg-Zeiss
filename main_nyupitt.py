@@ -448,7 +448,7 @@ def test_seg(args, test_result_path, test_loader):
     print('Loading test model ...')
     net = OSMGUNet()
     model = torch.nn.DataParallel(net).to(args.device)
-    checkpoint = torch.load(args.model_path, map_location=args.device)
+    checkpoint = torch.load(args.model_path, map_location=args.device, weights_only=False)
     model.load_state_dict(checkpoint['state_dict'])
     print('Model loaded!')
     cudnn.benchmark = True
