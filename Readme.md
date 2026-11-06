@@ -84,7 +84,7 @@ Since the exact dataset from Reference 1 was not available, a direct comparison 
 > 1) This map include the optic disc region (where there is little or no RNFL).
 > 2) The selected colormap (`jet`) is a research visualization choice; it is not intended for clinical interpretation.
 
-The segmentation model can be applied to compute retinal nerve fiber layer thickness maps (RNFLTs) from a folder of OCT volumes.
+Now, the trained segmentation model can be applied to compute retinal nerve fiber layer thickness maps (RNFLTs) from a folder of OCT volumes.
 
 
 **Requirements**:
@@ -98,10 +98,8 @@ The segmentation model can be applied to compute retinal nerve fiber layer thick
 python compute_rnfl_thickness_map_batch.py --model-path ./my-pretrained-model/model/model_best.pth.tar --batch-size 1 --data-dir ./my-example-datasets/onh-oct-volumes --log_path ./logs/
 ```
 
-This command performs slice-by-slice segmentation of each OCT volume:
-- The resulting segmentation volume is optionally saved as a `.npy` file.
-- A corresponding RNFL thickness map is computed in micrometers (µm) and saved as a `.npy` file and as a color-coded `.png` file (with physical axes in mm and a colorbar in µm).
-- All outputs are stored in the directory specified by `--log_path`.
+This command performs slice-by-slice segmentation of each OCT volume and computes an RNFL thickness map (µm). The segmentation and thickness maps can be saved as `.npy` files, and thickness maps can also be exported as color-coded `.png` images. All outputs are written to `--log_path`.
+
 
 **How the thickness is computed**:
 - For every A-scan, the number of pixels segmented as RNFL is multiplied by the axial pixel size: `thickness = N_RNFL_pixels × (2 mm / 1024)` ≈ `N_RNFL_pixels × 1.95 µm`.
