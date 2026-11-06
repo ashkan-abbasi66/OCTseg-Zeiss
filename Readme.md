@@ -81,9 +81,8 @@ Since the exact dataset from Reference 1 was not available, a direct comparison 
 </p>
 
 > [!WARNING]
-> This map include the optic disc region (where there is little or no RNFL) and are based on the raw segmentation, so segmentation errors appear directly in the map. 
-
-> The color scale is a research visualization choice; the maps are not clinically calibrated and do not reproduce the proprietary thickness maps or normative color coding of commercial OCT devices.
+> This map include the optic disc region (where there is little or no RNFL).
+> The selected colormap (`jet`) is a research visualization choice; it is not intended for clinical interpretation.
 
 The segmentation model can be applied to compute retinal nerve fiber layer thickness maps (RNFLTs) from a folder of OCT volumes.
 
